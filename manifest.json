@@ -1,11 +1,10 @@
-/* manifest.json */
 {
-  "name": "AGRIFLIX แปรรูปวัสดุเกษตร",
-  "short_name": "AGRIFLIX",
+  "name": "คู่มือแปรรูปเศษวัสดุเกษตร BCG",
+  "short_name": "แปรรูปวัสดุเกษตร",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#141414",
-  "theme_color": "#C84B4B",
+  "background_color": "#F7F5F0",
+  "theme_color": "#264E36",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/616/616490.png",
