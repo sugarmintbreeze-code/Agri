@@ -1,334 +1,407 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AGRIFLIX - คู่มือแปรรูปวัสดุเกษตรเชิงพื้นที่</title>
+  <title>คู่มือแปรรูปเศษวัสดุเกษตรสร้างอาชีพ</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#C84B4B">
+  <meta name="theme-color" content="#264E36">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Prompt', sans-serif; background-color: #141414; color: #E5E5E5; }
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background-color: #F7F5F0;
+      color: #1F1D1A;
+    }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .card-zoom:hover { transform: scale(1.05); }
   </style>
 </head>
-<body class="bg-[#141414] text-white min-h-screen pb-20">
+<body class="min-h-screen pb-24">
 
-  <!-- Navbar: สไตล์สตรีมมิ่ง โทนสีแดงอ่อน (Soft Red) -->
-  <header class="sticky top-0 z-50 bg-[#141414]/95 backdrop-blur-md border-b border-[#2A2A2A] px-4 py-3 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <span class="text-2xl font-black tracking-wider text-[#E05A5A]">AGRIFLIX</span>
-      <span class="hidden sm:inline-block text-xs bg-[#2A2A2A] text-[#E05A5A] px-2 py-0.5 rounded font-medium border border-[#E05A5A]/30">BCG เกษตรหมุนเวียน</span>
-    </div>
-    <div class="flex items-center space-x-2">
-      <button onclick="filterWaste('all')" class="text-xs bg-[#E05A5A] hover:bg-[#C84B4B] text-white font-medium px-3 py-1.5 rounded-full transition">ทั้งหมด</button>
-      <button onclick="document.getElementById('lawModal').classList.remove('hidden')" class="text-xs bg-[#262626] hover:bg-[#333333] text-[#E5A9A9] px-3 py-1.5 rounded-full border border-[#E05A5A]/40 transition">⚠️ กฎหมายเผา</button>
+  <!-- แถบด้านบน: ตัวอักษรใหญ่ ชัดเจน ไม่สะท้อนแสง -->
+  <header class="bg-[#264E36] text-[#FDFCF7] p-4 sm:p-5 shadow sticky top-0 z-40">
+    <div class="max-w-3xl mx-auto flex items-center justify-between">
+      <div>
+        <h1 class="text-xl sm:text-2xl font-extrabold tracking-wide">🌾 คู่มือแปรรูปเศษวัสดุเกษตร</h1>
+        <p class="text-sm text-[#D5E2D9] mt-0.5">เปลี่ยนของเหลือทิ้งในแปลงให้กลายเป็นเงิน (ตามหลัก BCG)</p>
+      </div>
+      <button onclick="document.getElementById('lawModal').classList.remove('hidden')" class="bg-[#9E472A] hover:bg-[#853B22] text-white text-xs sm:text-sm font-bold px-3 py-2 rounded-xl shadow transition">
+        ⚠️ โทษการเผา
+      </button>
     </div>
   </header>
 
-  <!-- หมวดตัวเลือกขยะเกษตรด่วน (Quick Category Filter) -->
-  <nav class="px-4 pt-3 flex space-x-2 overflow-x-auto hide-scrollbar text-xs">
-    <button onclick="filterWaste('all')" class="filter-pill shrink-0 px-3 py-1.5 rounded-full bg-[#E05A5A] text-white font-medium transition">📌 แสดงทั้งหมด</button>
-    <button onclick="filterWaste('straw')" class="filter-pill shrink-0 px-3 py-1.5 rounded-full bg-[#262626] text-[#D1D1D1] hover:bg-[#333333] transition">🌾 ฟางข้าว/แกลบ</button>
-    <button onclick="filterWaste('durian')" class="filter-pill shrink-0 px-3 py-1.5 rounded-full bg-[#262626] text-[#D1D1D1] hover:bg-[#333333] transition">🍈 เปลือกทุเรียน</button>
-    <button onclick="filterWaste('tea_coffee')" class="filter-pill shrink-0 px-3 py-1.5 rounded-full bg-[#262626] text-[#D1D1D1] hover:bg-[#333333] transition">☕ กากชา/กาแฟ/ไข่</button>
-    <button onclick="filterWaste('palm')" class="filter-pill shrink-0 px-3 py-1.5 rounded-full bg-[#262626] text-[#D1D1D1] hover:bg-[#333333] transition">🌴 ทะลายปาล์ม</button>
-    <button onclick="filterWaste('sugarcane')" class="filter-pill shrink-0 px-3 py-1.5 rounded-full bg-[#262626] text-[#D1D1D1] hover:bg-[#333333] transition">🎋 ใบอ้อย/ซังข้าวโพด</button>
-  </nav>
+  <main class="max-w-3xl mx-auto p-4 sm:p-6 space-y-6">
 
-  <!-- Hero Spotlight: ป้ายไฮไลท์ประจำแปลง -->
-  <section class="p-4">
-    <div class="relative rounded-2xl overflow-hidden bg-gradient-to-r from-[#2A1818] via-[#1F1515] to-[#141414] border border-[#E05A5A]/30 p-6 md:p-8 flex flex-col justify-end min-h-[220px]">
-      <div class="inline-flex items-center space-x-1 text-[11px] bg-[#E05A5A]/20 text-[#FFA4A4] border border-[#E05A5A]/40 px-2.5 py-0.5 rounded-full w-fit mb-2">
-        <span>🔥 แนะนำยอดนิยมเชิงพื้นที่</span>
+    <!-- ขั้นที่ 1: เลือกวัสดุที่มีในไร่นา -->
+    <section class="bg-white rounded-2xl p-5 shadow-sm border border-[#E3DEC3]">
+      <div class="flex items-center space-x-2 mb-3">
+        <span class="bg-[#264E36] text-white text-sm font-bold px-3 py-1 rounded-full">ขั้นที่ 1</span>
+        <h2 class="text-lg sm:text-xl font-bold text-[#1F1D1A]">แตะเลือกวัสดุที่คุณมีในแปลง (เลือกได้หลายอย่าง):</h2>
       </div>
-      <h2 class="text-xl md:text-2xl font-bold text-white mb-2">เพาะเห็ดฟางกองเตี้ยและตะกร้าจากฟางข้าว</h2>
-      <p class="text-xs text-[#CCCCCC] max-w-xl mb-4 line-clamp-2">เปลี่ยนตอซังฟางข้าวและกากมันสำปะหลังเป็นแหล่งโปรตีนและรายได้เสริมเฉลี่ย 2,462 – 3,000 บาท/เดือน ตัดวงจรการเผาในชุมชน</p>
-      <div class="flex space-x-3">
-        <button onclick="openDetail(2)" class="bg-[#E05A5A] hover:bg-[#C84B4B] text-white text-xs font-semibold px-4 py-2 rounded-lg flex items-center space-x-1.5 shadow-md transition">
-          <span>▶ ดูขั้นตอนแปรรูป</span>
-        </button>
-        <button onclick="openDetail(2)" class="bg-[#333333]/80 hover:bg-[#444444] text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
-          ℹ ข้อมูลวิชาการ
-        </button>
-      </div>
-    </div>
-  </section>
 
-  <!-- ชั้นวางเนื้อหา (Horizontal Card Shelves) -->
-  <main class="space-y-6 px-4">
-    
-    <!-- แถวที่ 1: รายการยอดนิยมสร้างรายได้เร็ว -->
-    <section>
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm md:text-base font-bold text-white flex items-center space-x-2">
-          <span class="w-1 h-4 bg-[#E05A5A] rounded-full inline-block"></span>
-          <span>สร้างรายได้เสริม & ลดต้นทุนทันที</span>
-        </h3>
+      <!-- รายการวัสดุการเกษตร 10 หมวดหมู่ -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="wasteGrid">
+        
+        <button onclick="toggleWaste('straw', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🌾</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">ฟางข้าว & แกลบ</div>
+        </button>
+
+        <button onclick="toggleWaste('durian', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🍈</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">เปลือกทุเรียน & ผลหล่น</div>
+        </button>
+
+        <button onclick="toggleWaste('sugarcane_corn', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🌽</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">ใบอ้อย & ซังข้าวโพด</div>
+        </button>
+
+        <button onclick="toggleWaste('cassava', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🥔</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">กากมัน & เหง้ามัน</div>
+        </button>
+
+        <button onclick="toggleWaste('palm', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🌴</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">ทะลายปาล์ม & ทางใบ</div>
+        </button>
+
+        <button onclick="toggleWaste('coconut', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🥥</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">กะลา & ขุยมะพร้าว</div>
+        </button>
+
+        <button onclick="toggleWaste('banana', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🍌</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">หยวกกล้วย & ใบตอง</div>
+        </button>
+
+        <button onclick="toggleWaste('tea_coffee_egg', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">☕</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">กากชา กาแฟ & เปลือกไข่</div>
+        </button>
+
+        <button onclick="toggleWaste('branches', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🪵</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">กิ่งไม้ตัดแต่ง & ใบสัก</div>
+        </button>
+
+        <button onclick="toggleWaste('hyacinth_reed', this)" class="waste-btn p-3.5 border-2 border-[#D8D2C4] bg-[#FAF8F5] rounded-xl text-left hover:border-[#264E36] transition flex flex-col justify-between min-h-[90px]">
+          <div class="flex justify-between items-start">
+            <span class="text-3xl">🌿</span>
+            <span class="check-mark hidden text-[#264E36] font-extrabold text-sm">✓ เลือกแล้ว</span>
+          </div>
+          <div class="font-bold text-sm text-[#1F1D1A] mt-2">ผักตบชวา & กก/ธูปฤๅษี</div>
+        </button>
+
       </div>
-      <div class="flex space-x-3.5 overflow-x-auto hide-scrollbar pb-2" id="shelf-trending"></div>
+
+      <button onclick="searchRecommendations()" class="w-full mt-5 bg-[#264E36] hover:bg-[#1E3F2B] text-white font-bold py-3.5 px-4 rounded-xl text-base sm:text-lg shadow transition flex items-center justify-center space-x-2">
+        <span>🔍 ค้นหาผลิตภัณฑ์ที่ทำได้ทันที</span>
+      </button>
     </section>
 
-    <!-- แถวที่ 2: นวัตกรรมวัสดุชีวภาพ & ภาชนะธรรมชาติ -->
-    <section>
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm md:text-base font-bold text-white flex items-center space-x-2">
-          <span class="w-1 h-4 bg-[#E05A5A] rounded-full inline-block"></span>
-          <span>บรรจุภัณฑ์และโฟมชีวภาพย่อยสลายได้</span>
-        </h3>
+    <!-- ขั้นที่ 2: แสดงผลลัพธ์คำแนะนำ -->
+    <section id="resultsSection" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <span class="bg-[#9E472A] text-white text-sm font-bold px-3 py-1 rounded-full">ขั้นที่ 2</span>
+          <h2 class="text-lg sm:text-xl font-bold text-[#1F1D1A]">ผลิตภัณฑ์ที่แนะนำสำหรับคุณ:</h2>
+        </div>
+        <span id="resultCountBadge" class="text-xs sm:text-sm bg-[#E8E4DA] text-[#423E39] font-bold px-3 py-1 rounded-full"></span>
       </div>
-      <div class="flex space-x-3.5 overflow-x-auto hide-scrollbar pb-2" id="shelf-biomaterial"></div>
-    </section>
 
-    <!-- แถวที่ 3: ปุ๋ยอินทรีย์ & พลังงานหมุนเวียน -->
-    <section>
-      <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm md:text-base font-bold text-white flex items-center space-x-2">
-          <span class="w-1 h-4 bg-[#E05A5A] rounded-full inline-block"></span>
-          <span>ปุ๋ยอินทรีย์ ปรับปรุงดิน และชีวมวล</span>
-        </h3>
-      </div>
-      <div class="flex space-x-3.5 overflow-x-auto hide-scrollbar pb-2" id="shelf-circular"></div>
+      <!-- รายการการ์ดคำแนะนำ -->
+      <div id="cardsList" class="space-y-4"></div>
     </section>
 
   </main>
 
-  <!-- Modal: หน้าต่างรายละเอียดสไตล์สตรีมมิ่ง -->
-  <div id="detailModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-[#1C1C1E] border border-[#333333] rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto hide-scrollbar p-6 space-y-4">
+  <!-- หน้าต่างแสดงข้อกฎหมายและบทลงโทษ -->
+  <div id="lawModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white border-2 border-[#9E472A] rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-xl">
       <div class="flex justify-between items-start">
-        <div class="flex items-center space-x-3">
-          <span id="mIcon" class="text-3xl p-2 bg-[#2A1818] border border-[#E05A5A]/30 rounded-xl">🌾</span>
-          <div>
-            <span id="mTag" class="text-[10px] bg-[#E05A5A]/20 text-[#FFA4A4] border border-[#E05A5A]/30 px-2 py-0.5 rounded font-semibold">BCG หมุนเวียน</span>
-            <h3 id="mTitle" class="text-base font-bold text-white mt-1">ชื่อผลิตภัณฑ์</h3>
-          </div>
+        <div class="flex items-center space-x-2">
+          <span class="text-3xl">⚠️</span>
+          <h3 class="text-lg font-bold text-[#9E472A]">กฎหมายและบทลงโทษการเผาในที่โล่ง</h3>
         </div>
-        <button onclick="document.getElementById('detailModal').classList.add('hidden')" class="text-[#888888] hover:text-white text-lg font-bold p-1">✕</button>
+        <button onclick="document.getElementById('lawModal').classList.add('hidden')" class="text-stone-400 hover:text-stone-700 text-2xl font-bold">✕</button>
       </div>
 
-      <div class="bg-[#261E1E] border border-[#E05A5A]/30 rounded-xl p-3.5 space-y-2 text-xs">
-        <p class="text-[#FFA4A4]"><b>🔬 พารามิเตอร์จริง/ข้อมูลงานวิจัย:</b> <span id="mParam" class="text-[#E0D0D0]"></span></p>
-        <p class="text-[#FFD285]"><b>💰 ผลประโยชน์ที่แท้จริง:</b> <span id="mBenefit" class="text-[#E0D0D0]"></span></p>
+      <div class="space-y-3 text-sm text-[#383430]">
+        <div class="p-3.5 bg-[#FAF4F0] rounded-xl border-l-4 border-[#9E472A]">
+          <p class="font-bold text-[#9E472A]">1. พ.ร.บ. การสาธารณสุข พ.ศ. 2535 (มาตรา 25, 74)</p>
+          <p class="mt-1">การเผาที่ทำให้เกิดกลิ่น แสง ความร้อน ควัน หรือเขม่าเถ้า หากเจ้าพนักงานสั่งห้ามแล้วยังฝ่าฝืน มีโทษ<b>จำคุกไม่เกิน 3 เดือน หรือปรับไม่เกิน 25,000 บาท หรือทั้งจำทั้งปรับ</b></p>
+        </div>
+        <div class="p-3.5 bg-[#FAF4F0] rounded-xl border-l-4 border-[#9E472A]">
+          <p class="font-bold text-[#9E472A]">2. ประมวลกฎหมายอาญา (มาตรา 220)</p>
+          <p class="mt-1">การจุดไฟเผาสิ่งใดๆ แม้เป็นของตนเอง จนน่าจะเป็นอันตรายแก่บุคคลอื่นหรือทรัพย์ของผู้อื่น มีโทษ<b>จำคุกไม่เกิน 7 ปี และปรับไม่เกิน 140,000 บาท</b></p>
+        </div>
       </div>
 
-      <div class="space-y-2">
-        <h4 class="text-xs font-bold text-white flex items-center space-x-1">
-          <span class="text-[#E05A5A]">▶</span>
-          <span>ขั้นตอนการแปรรูปอย่างง่ายสำหรับเกษตรกร:</span>
-        </h4>
-        <ul id="mSteps" class="space-y-2 text-xs text-[#CCCCCC]"></ul>
-      </div>
-
-      <button onclick="document.getElementById('detailModal').classList.add('hidden')" class="w-full bg-[#E05A5A] hover:bg-[#C84B4B] text-white text-xs font-semibold py-2.5 rounded-xl transition">
-        ปิดหน้าต่าง
+      <button onclick="document.getElementById('lawModal').classList.add('hidden')" class="w-full bg-[#264E36] hover:bg-[#1E3F2B] text-white font-bold py-2.5 rounded-xl transition text-base">
+        เข้าใจและปิดหน้าต่าง
       </button>
     </div>
   </div>
 
-  <!-- Modal: กฎหมายและบทลงโทษการเผา -->
-  <div id="lawModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-[#1C1C1E] border border-[#E05A5A]/50 rounded-2xl max-w-md w-full p-6 space-y-4">
-      <div class="flex justify-between items-start">
-        <div class="flex items-center space-x-2">
-          <span class="text-2xl">⚠️</span>
-          <h3 class="text-sm font-bold text-white">ข้อกฎหมายควบคุมการเผาในที่โล่ง</h3>
-        </div>
-        <button onclick="document.getElementById('lawModal').classList.add('hidden')" class="text-[#888888] hover:text-white text-lg font-bold">✕</button>
-      </div>
-      <div class="space-y-3 text-xs text-[#CCCCCC]">
-        <div class="p-3 bg-[#2A1818] rounded-xl border border-[#E05A5A]/30">
-          <p class="font-bold text-[#FFA4A4]">1. พ.ร.บ. การสาธารณสุข พ.ศ. 2535 (ม.25, 74)</p>
-          <p class="mt-1 text-[#E0D0D0]">การเผาที่ก่อเหตุรำคาญ กลิ่น ควัน เขม่าเถ้า ฝ่าฝืนคำสั่งเจ้าพนักงาน มีโทษจำคุกไม่เกิน 3 เดือน หรือปรับไม่เกิน 25,000 บาท หรือทั้งจำทั้งปรับ</p>
-        </div>
-        <div class="p-3 bg-[#2A1818] rounded-xl border border-[#E05A5A]/30">
-          <p class="font-bold text-[#FFA4A4]">2. ประมวลกฎหมายอาญา (มาตรา 220)</p>
-          <p class="mt-1 text-[#E0D0D0]">การจุดไฟเผาทรัพย์สินแม้เป็นของตนเอง จนน่าจะเป็นอันตรายแก่บุคคลอื่นหรือทรัพย์ผู้อื่น มีโทษจำคุกไม่เกิน 7 ปี และปรับไม่เกิน 140,000 บาท</p>
-        </div>
-      </div>
-      <button onclick="document.getElementById('lawModal').classList.add('hidden')" class="w-full bg-[#262626] hover:bg-[#333333] text-white text-xs py-2 rounded-lg transition">รับทราบ</button>
-    </div>
-  </div>
-
   <script>
-    const AGRI_CONTENT = [
+    // ฐานข้อมูลแนวทางแปรรูปและพารามิเตอร์จริง
+    const DATABASE = [
       {
-        id: 0,
-        category: 'biomaterial',
-        wasteKey: 'straw',
-        title: 'กระถางเพาะชำฟางข้าวย่อยสลายได้',
+        keys: ['straw'],
+        title: 'กระถางเพาะชำย่อยสลายได้จากฟางข้าว',
         icon: '🪴',
-        tag: 'Circular Bio',
-        badge: 'รับน้ำหนัก 135 kg',
-        param: 'ใช้ฟางข้าวยาว 1.5–2.0 ซม. ผสมแป้งเปียก 200 กรัม กาวธรรมชาติ 300 กรัม ต่อน้ำหนักฟางแห้ง 200 กรัม รับแรงกดทับสูงสุด 135.1 กก. (น้ำหนักกระถางเบาเพียง 64.0 กรัม)',
-        benefit: 'ทดแทนถุงดำพลาสติก นำลงดินได้ทั้งกระถาง รากพืชแทงทะลุได้ ช่วยลดมลพิษจากการเผาตอซัง',
+        badge: 'รับน้ำหนัก 135.1 กก.',
+        param: 'ตัดฟางข้าวยาว 1.5–2.0 ซม. ผสมแป้งเปียก 200 กรัม กาวธรรมชาติ 300 กรัม ต่อน้ำหนักฟางแห้ง 200 กรัม ช่วยให้โครงข่ายเส้นใยส่งถ่ายแรงได้สูงสุด รับแรงกดได้ 135.1 กก. (กระถางเบาเพียง 64 กรัม)',
+        benefit: 'ทดแทนถุงเพาะชำพลาสติก นำลงดินได้ทั้งกระถาง รากพืชแทงผ่านได้ดีและย่อยสลายกลายเป็นปุ๋ยบำรุงดิน',
         steps: [
-          'สับฟางข้าวแห้งให้ได้ความยาว 1.5 - 2.0 ซม. เพื่อให้เส้นใยเกาะเกี่ยวกันได้เหนียวแน่นที่สุด',
-          'ผสมฟางข้าว 200 กรัม แป้งเปียก 200 กรัม กาวธรรมชาติ 300 กรัม และน้ำ 100 มล. ให้เข้ากัน',
-          'อัดส่วนผสมลงในแม่พิมพ์กระถางพลาสติกให้แน่น',
-          'ตากแดดหรืออบให้แห้งสนิท จะได้กระถางเส้นใยที่ระบายอากาศและอุ้มความชื้นได้พอดี'
+          'สับฟางข้าวแห้งให้มีความยาว 1.5 ถึง 2.0 เซนติเมตร',
+          'ผสมฟางข้าว 200 กรัม กับแป้งเปียก 200 กรัม กาวธรรมชาติ 300 กรัม และเติมน้ำสะอาด 100 มิลลิลิตร',
+          'คลุกเคล้าให้เข้ากันแล้วอัดลงในแบบกระถางพลาสติกให้แน่น',
+          'ตากแดดหรือผึ่งลมจนแห้งสนิท จะได้กระถางเส้นใยธรรมชาติพร้อมใช้งาน'
         ]
       },
       {
-        id: 1,
-        category: 'biomaterial',
-        wasteKey: 'straw',
-        title: 'จานชามฟางข้าวเคลือบใบไม้ธรรมชาติ',
+        keys: ['straw', 'banana', 'branches'],
+        title: 'จานชามและภาชนะฟางข้าวเคลือบใบไม้ธรรมชาติ',
         icon: '🍽️',
-        tag: 'Green Packaging',
-        badge: 'กันน้ำนาน >14 วัน',
-        param: 'ใช้แม่พิมพ์บน 180–190°C และแม่พิมพ์ล่าง 190–200°C ผิวเรียบ คงรูป ไม่รั่วซึมแม้ใส่น้ำทิ้งไว้นานเกิน 14 วัน',
-        benefit: 'ทดแทนโฟมและจานพลาสติกในงานบุญประเพณีและร้านอาหารชุมชน สร้างมูลค่าเพิ่มจากฟางข้าว',
+        badge: 'ใส่น้ำได้นานเกิน 14 วัน',
+        param: 'ใช้เยื่อฟางข้าวประกบใบไม้ท้องถิ่น (ใบตอง/ใบสัก) อัดด้วยแม่พิมพ์บนอุณหภูมิ 180–190°C และแม่พิมพ์ล่าง 190–200°C ผิวเรียบ คงรูป ไม่รั่วซึม',
+        benefit: 'ทดแทนจานโฟมและพลาสติกในงานบุญ งานประเพณี และร้านอาหารในชุมชน',
         steps: [
           'ต้มและปั่นฟางข้าวเพื่อขึ้นรูปเป็นเยื่อกระดาษ',
-          'วางประกบด้วยใบไม้ท้องถิ่น เช่น ใบตอง หรือใบสัก ทั้งด้านบนและล่าง',
-          'นำเข้าเครื่องอัดความร้อน แม่พิมพ์บน 180–190°C และล่าง 190–200°C',
-          'ตัดแต่งขอบให้เรียบร้อย จะได้ภาชนะลวดลายธรรมชาติที่แข็งแรง'
+          'นำใบตองหรือใบสักมาวางประกบผิวหน้า-หลังของเยื่อฟางข้าว',
+          'นำเข้าเครื่องอัดแม่พิมพ์ความร้อนบน 180–190°C และล่าง 190–200°C',
+          'ตัดแต่งขอบให้เรียบร้อย ได้จานชามที่มีลวดลายใบไม้ตามธรรมชาติ'
         ]
       },
       {
-        id: 2,
-        category: 'trending',
-        wasteKey: 'straw',
-        title: 'เพาะเห็ดฟางกองเตี้ย & ตะกร้า',
+        keys: ['straw', 'cassava'],
+        title: 'การเพาะเห็ดฟางกองเตี้ยและเพาะในตะกร้า',
         icon: '🍄',
-        tag: 'รายได้เสริมเร็ว',
-        badge: '+3,000 บ./เดือน',
-        param: 'ใช้ฟางข้าวร่วมกับกากมันสำปะหลัง สร้างรายได้เฉลี่ย 2,462 – 3,000 บาท/เดือน ต่อครัวเรือน',
-        benefit: 'เก็บเกี่ยวผลผลิตได้ไวใน 7-10 วัน เป็นแหล่งอาหารโปรตีนปลอดภัยในชุมชน',
+        badge: 'รายได้เสริม 2,500-3,000 บ./เดือน',
+        param: 'ใช้ฟางข้าวร่วมกับกากมันสำปะหลัง เป็นแหล่งอาหารเพาะเลี้ยงจุลินทรีย์ สร้างรายได้เสริมให้เกษตรกรเฉลี่ย 2,462 – 3,000 บาทต่อเดือน',
+        benefit: 'เก็บเกี่ยวผลผลิตได้เร็วภายใน 7–10 วัน ตัดวงจรการเผาตอซังในนาข้าวได้ 100%',
         steps: [
-          'แช่ฟางข้าวในน้ำ 1 คืน ให้อุ้มน้ำพอหมาด',
-          'จัดเรียงฟางข้าวลงแปลงกองเตี้ยหรือตะกร้า สลับชั้นกับกากมัน/รำข้าว และโรยเชื้อเห็ดฟาง',
-          'คลุมแปลงด้วยพลาสติกและสแลนเพื่อควบคุมอุณหภูมิและความชื้น',
-          'เปิดระบายอากาศเล็กน้อยเมื่อเส้นใยเดินเต็มเพื่อกระตุ้นการออกดอกเห็ด'
+          'นำฟางข้าวแห้งมาแช่น้ำ 1 คืน ให้อุ้มน้ำพอหมาด',
+          'จัดเรียงฟางลงในตะกร้าหรือแปลงกองเตี้ย สลับชั้นกับกากมันสำปะหลัง/รำข้าว และโรยเชื้อเห็ดฟาง',
+          'คลุมด้วยพลาสติกเพื่อคุมความชื้นและอุณหภูมิ',
+          'เปิดระบายอากาศและรดน้ำเบาๆ เมื่อเส้นใยเจริญเต็มที่เพื่อกระตุ้นการออกดอก'
         ]
       },
       {
-        id: 3,
-        category: 'trending',
-        wasteKey: 'durian',
-        title: 'ปุ๋ยอินทรีย์คุณภาพสูงจากเปลือกทุเรียน',
+        keys: ['durian'],
+        title: 'ปุ๋ยอินทรีย์คุณภาพสูงจากเปลือกทุเรียน (สูตร พด.1 / ไส้เดือนดิน)',
         icon: '🌱',
-        tag: 'Circular Agri',
-        badge: 'การงอกพืช 90%',
-        param: 'เปลือกทุเรียนมีความชื้น 84.6% มีโพแทสเซียมสูง หมักด้วย พด.1 หรือไส้เดือนดิน ได้ดัชนีการงอกของเมล็ดพืชสูงถึง 90%',
-        benefit: 'ลดต้นทุนค่าปุ๋ยเคมีบำรุงแปลงผลไม้ และกำจัดกองเปลือกทุเรียนสะสมในฤดูเก็บเกี่ยว',
+        badge: 'เมล็ดงอกสูง 90%',
+        param: 'เปลือกทุเรียนมีความชื้น 84.6% และมีโพแทสเซียมสูง เมื่อหมักด้วยสารเร่ง พด.1 หรือไส้เดือนดิน จะได้ค่าดัชนีการงอกของเมล็ดพืชสูงถึง 90%',
+        benefit: 'ลดต้นทุนการซื้อปุ๋ยเคมีบำรุงต้นทุเรียน แก้ปัญหาเปลือกทุเรียนสะสมส่งกลิ่นเหม็นในฤดูเก็บเกี่ยว',
         steps: [
           'รวบรวมเปลือกทุเรียนและเศษกิ่งใบ นำเข้าเครื่องสับย่อยเพื่อลดขนาด',
-          'ตั้งกองหมักแบบใช้อากาศ เติมสารเร่งซุปเปอร์ พด.1 หรือใช้ไส้เดือนดินย่อยสลาย',
-          'ควบคุมความชื้นและกลับกองตามกำหนด กองหมักจะปรับสภาพความเป็นกรดเข้าสู่ค่ากลาง',
-          'ร่อนเอาปุ๋ยอินทรีย์ร่วนซุย ปราศจากกลิ่น นำไปใส่โคนต้นเพื่อเสริมโพแทสเซียม'
+          'กองหมักแบบใช้อากาศ เติมสารเร่งซุปเปอร์ พด.1 หรือนำไปเป็นอาหารเลี้ยงไส้เดือนดิน',
+          'ดูแลรักษาความชื้น กองหมักจะย่อยสลายกลายเป็นปุ๋ยอินทรีย์ร่วนซุย ปราศจากกลิ่น',
+          'นำไปใส่บำรุงรอบโคนต้นไม้เพื่อเพิ่มธาตุอาหารโพแทสเซียมในดิน'
         ]
       },
       {
-        id: 4,
-        category: 'biomaterial',
-        wasteKey: 'tea_coffee',
-        title: 'โฟมชีวภาพไมซีเลียม (ฉนวน & กันกระแทก)',
+        keys: ['durian'],
+        title: 'แปรรูปทุเรียนตกเกรดและผลหล่น',
+        icon: '🍯',
+        badge: 'เพิ่มมูลค่าผลผลิต',
+        param: 'คัดแยกเนื้อทุเรียนที่หล่นจากต้นแต่ยังสมบูรณ์ นำมาแปรรูปเป็นผลิตภัณฑ์ชุมชน',
+        benefit: 'เปลี่ยนผลไม้ร่วงหล่นที่ขายสดไม่ได้ราคาให้กลายเป็นรายได้เข้ากลุ่มแม่บ้านเกษตรกร',
+        steps: [
+          'คัดแยกผลทุเรียนที่หล่น ตรวจสอบเนื้อส่วนที่สะอาดและไม่เน่าเสีย',
+          'นำเนื้อทุเรียนไปกวน ทำแยม เยลลี่ หรืออบแห้ง',
+          'บรรจุใส่ภาชนะสะอาด ติดฉลากวิสาหกิจชุมชนพร้อมจำหน่าย'
+        ]
+      },
+      {
+        keys: ['tea_coffee_egg'],
+        title: 'โฟมชีวภาพไมซีเลียมเห็ด (กันกระแทก & ฉนวนความร้อน)',
         icon: '📦',
-        tag: 'Deep Tech BCG',
-        badge: 'ทนแรงอัด 222 kPa',
-        param: 'กากชาผสมเปลือกไข่บด 10% ปรับ pH สู่ 6.59 เติมหัวเชื้อเห็ด 25% บ่ม 30–33 วัน ทนแรงอัดสูง 193–222 kPa ย่อยสลายได้ 100%',
-        benefit: 'ทดแทนโฟมพลาสติกกันกระแทกในการขนส่งผลไม้ และใช้เป็นแผ่นฉนวนกันความร้อนในอาคาร',
+        badge: 'ทนแรงอัด 193-222 kPa',
+        param: 'กากชาผสมเปลือกไข่บด 10% ช่วยปรับค่า pH จาก 5.56 เป็น 6.59 ร่วมกับหัวเชื้อเห็ดนางรม/นางฟ้า 25% บ่ม 30–33 วัน ทนแรงอัดสูง 193–222 kPa และย่อยสลายได้ 100%',
+        benefit: 'ทดแทนโฟมกล่องพลาสติก ใช้เป็นโฟมกันกระแทกในการขนส่งผลไม้และฉนวนกันความร้อนในอาคาร',
         steps: [
-          'นำกากชา/กากกาแฟแห้ง ผสมเปลือกไข่บด 10% เพื่อปรับสมดุลกรด-ด่าง',
-          'นึ่งฆ่าเชื้อที่ 121°C นาน 20 นาที พักให้เย็น คลุกผสมเชื้อเห็ดนางรม/นางฟ้า 25%',
-          'อัดลงแม่พิมพ์ บ่มที่อุณหภูมิ 25–30°C ความชื้น 70% นาน 30–33 วัน จนเส้นใยสีขาวคลุมแน่น',
-          'นำออกจากพิมพ์ไปอบแห้งที่ 65°C นาน 48 ชม. เพื่อหยุดการเจริญเติบโต'
+          'นำกากชาหรือกากกาแฟแห้ง ผสมเปลือกไข่บดละเอียด 10% เพื่อปรับสมดุลกรด-ด่าง',
+          'นึ่งฆ่าเชื้อที่ 121°C นาน 20 นาที พักให้เย็น แล้วคลุกผสมเชื้อเห็ด 25%',
+          'อัดลงแม่พิมพ์ บ่มในที่มืดอุณหภูมิ 25–30°C นาน 30–33 วัน จนเส้นใยสีขาวคลุมแน่น',
+          'นำไปอบแห้งที่อุณหภูมิ 65°C นาน 48 ชั่วโมง เพื่อให้โฟมคงรูปแข็งแรง'
         ]
       },
       {
-        id: 5,
-        category: 'circular',
-        wasteKey: 'palm',
-        title: 'ชีวถ่านไบโอชาร์ & เชื้อเพลิงชีวมวล',
-        icon: '🔥',
-        tag: 'Carbon Storage',
-        badge: 'พลังงาน 4000 kcal',
-        param: 'ใบอ้อยมีค่าความร้อน 3,500–4,000 kcal/kg ทะลายปาล์มมีลิกนินและเซลลูโลสสูง กะลามะพร้าวมีคาร์บอนคงที่ >70%',
-        benefit: 'จำหน่ายเข้าโรงไฟฟ้าชีวมวล หรือผลิตถ่านชีวภาพปรับปรุงดิน ช่วยอุ้มน้ำและปุ๋ยในแปลง',
+        keys: ['sugarcane_corn', 'palm'],
+        title: 'เชื้อเพลิงชีวมวลอัดแท่งและอัดเม็ด (Biomass Pellets)',
+        icon: '🏭',
+        badge: 'ความร้อน 3,500-4,000 kcal',
+        param: 'ใบอ้อยแห้งมีค่าความร้อนสูง 3,500–4,000 kcal/กก. ทะลายปาล์มมีเส้นใยเหนียวและลิกนินสูง เหมาะต่อการอัดแท่งเชื้อเพลิง',
+        benefit: 'รวบรวมส่งขายโรงไฟฟ้าชีวมวล สร้างรายได้ทดแทนการจุดไฟเผาใบอ้อยในไร่',
         steps: [
-          'รวบรวมเศษใบอ้อย ทะลายปาล์ม หรือกิ่งไม้ตัดแต่ง นำมาตากให้แห้ง',
-          'เผาในเตาชีวมวลไร้ออกซิเจน (Pyrolysis) เพื่อให้ได้ถ่านไบโอชาร์รูพรุนสูง ไร้ควันพิษ',
-          'นำถ่านที่ได้มาทุบผสมลงในดินร่วมกับปุ๋ยหมัก ช่วยกักเก็บคาร์บอนและธาตุอาหารในดินระยะยาว'
+          'รวบรวมใบอ้อย ซังข้าวโพด หรือทะลายปาล์ม นำมาตากแดดลดความชื้น',
+          'นำเข้าเครื่องบดละเอียดให้เป็นผงเส้นใย',
+          'เข้าเครื่องอัดเม็ดด้วยแรงดันสูง ได้แท่งเชื้อเพลิงชีวมวลแข็งแรง',
+          'บรรจุกระสอบส่งจำหน่ายโรงงานอุตสาหกรรมหรือโรงไฟฟ้าชีวมวล'
+        ]
+      },
+      {
+        keys: ['coconut', 'branches'],
+        title: 'ถ่านไบโอชาร์ (Biochar) และถ่านกัมมันต์กักเก็บคาร์บอน',
+        icon: '🔥',
+        badge: 'คาร์บอนคงที่ >70%',
+        param: 'กะลามะพร้าวมีคาร์บอนคงที่สูงกว่า 70% และขุยมะพร้าวอุ้มน้ำได้ 8–10 เท่า ช่วยปรับปรุงโครงสร้างดินและลดการสูญเสียปุ๋ย',
+        benefit: 'ใช้เป็นเชื้อเพลิงไร้ควัน, สารกรองน้ำ หรือผสมดินปลูกพืชเพื่อรักษาความชื้นในหน้าแล้ง',
+        steps: [
+          'นำกะลามะพร้าวหรือกิ่งไม้จากการตัดแต่งทรงพุ่ม ตากแดดให้แห้งสนิท',
+          'นำเข้าเตาเผาชีวมวลแบบควบคุมอากาศ (ไร้ออกซิเจน) เพื่อไม่ให้เกิดควัน',
+          'ได้ถ่านไบโอชาร์ที่มีรูพรุนสูง นำไปทุบเป็นก้อนเล็ก',
+          'คลุกผสมลงในดินร่วมกับปุ๋ยหมักเพื่อเป็นบ้านพักของจุลินทรีย์ดิน'
+        ]
+      },
+      {
+        keys: ['banana'],
+        title: 'เส้นใยกาบกล้วยหัตถกรรมและน้ำหมักชีวภาพหน่อกล้วย',
+        icon: '🧵',
+        badge: 'เส้นใยเหนียว แปรรูปง่าย',
+        param: 'กาบกล้วยมีเส้นใยยาวเหนียว ทนแรงดึงได้ดี ส่วนหยวกกล้วยมีจุลินทรีย์และฮอร์โมนพืชธรรมชาติ',
+        benefit: 'ทำเชือกมัด งานจักสาน กระดาษสา และทำน้ำหมักบำรุงรากพืชโดยไม่ต้องซื้อสารเคมี',
+        steps: [
+          'ลอกกาบกล้วยออกเป็นเส้น ขูดเอาเนื้อออกแล้วตากแดดให้แห้งสนิทสำหรับงานจักสาน',
+          'หยวกกล้วยที่เหลือนำมาหั่นเป็นชิ้นเล็ก ผสมกากน้ำตาลในอัตราส่วน 3 ต่อ 1',
+          'หมักทิ้งไว้ในถังปิด 7–15 วัน จะได้น้ำหมักชีวภาพเข้มข้น',
+          'ผสมน้ำในอัตราส่วน 1:500 เพื่อฉีดพ่นบำรุงการแตกรากของพืช'
+        ]
+      },
+      {
+        keys: ['hyacinth_reed', 'straw'],
+        title: 'บล็อกกันความร้อนและกระถางเพาะชำจากผักตบชวา/ต้นกก',
+        icon: '🧱',
+        badge: 'มาตรฐาน มอก.58-2533',
+        param: 'เส้นใยผักตบชวาและต้นธูปฤๅษีเป็นฉนวนความร้อนที่ดี มีน้ำหนักเบา นำมาขึ้นรูปเป็นบล็อกคอนกรีตมวลเบาผ่านเกณฑ์ มอก.',
+        benefit: 'ลดความร้อนเข้าสู่อาคาร ประหยัดค่าไฟ และช่วยกำจัดวัชพืชที่กีดขวางทางน้ำในชุมชน',
+        steps: [
+          'เก็บผักตบชวาหรือต้นธูปฤๅษี นำมาตากแดดให้แห้งสนิทแล้วหั่นเป็นท่อนสั้น',
+          'ผสมเส้นใยเข้ากับปูนซีเมนต์ ทราย และน้ำตามสัดส่วน',
+          'เทลงแบบหล่อบล็อกคอนกรีต อัดให้แน่นแล้วบ่มคอนกรีตตามระยะเวลา',
+          'ได้บล็อกกันความร้อนน้ำหนักเบาสำหรับก่อผนังอาคาร'
         ]
       }
     ];
 
-    function renderCards(filter = 'all') {
-      const trendingContainer = document.getElementById('shelf-trending');
-      const bioContainer = document.getElementById('shelf-biomaterial');
-      const circularContainer = document.getElementById('shelf-circular');
+    let selectedWastes = new Set();
 
-      trendingContainer.innerHTML = '';
-      bioContainer.innerHTML = '';
-      circularContainer.innerHTML = '';
+    function toggleWaste(key, btn) {
+      const checkMark = btn.querySelector('.check-mark');
+      if (selectedWastes.has(key)) {
+        selectedWastes.delete(key);
+        btn.classList.remove('border-[#264E36]', 'bg-[#EBF3ED]');
+        btn.classList.add('border-[#D8D2C4]', 'bg-[#FAF8F5]');
+        checkMark.classList.add('hidden');
+      } else {
+        selectedWastes.add(key);
+        btn.classList.remove('border-[#D8D2C4]', 'bg-[#FAF8F5]');
+        btn.classList.add('border-[#264E36]', 'bg-[#EBF3ED]');
+        checkMark.classList.remove('hidden');
+      }
+    }
 
-      AGRI_CONTENT.forEach(item => {
-        if (filter !== 'all' && item.wasteKey !== filter) return;
+    function searchRecommendations() {
+      const list = document.getElementById('cardsList');
+      const section = document.getElementById('resultsSection');
+      const badge = document.getElementById('resultCountBadge');
+      list.innerHTML = '';
 
-        const card = document.createElement('div');
-        card.className = "shrink-0 w-52 bg-[#1C1C1E] border border-[#2E2E2E] hover:border-[#E05A5A]/60 rounded-xl p-3.5 space-y-2 cursor-pointer transition card-zoom";
-        card.onclick = () => openDetail(item.id);
-        card.innerHTML = `
-          <div class="relative h-24 rounded-lg bg-gradient-to-br from-[#2A1818] to-[#141414] border border-[#3A2222] flex items-center justify-center">
-            <span class="text-4xl">${item.icon}</span>
-            <span class="absolute top-2 right-2 text-[9px] bg-[#E05A5A] text-white px-1.5 py-0.5 rounded font-bold">${item.badge}</span>
-          </div>
-          <div>
-            <span class="text-[9px] text-[#FFA4A4] font-medium">${item.tag}</span>
-            <h4 class="text-xs font-bold text-white truncate">${item.title}</h4>
-            <p class="text-[10px] text-[#A0A0A0] mt-1 line-clamp-2">${item.benefit}</p>
+      if (selectedWastes.size === 0) {
+        alert('กรุณากดแตะเลือกวัสดุที่คุณมีอย่างน้อย 1 รายการก่อนครับ');
+        return;
+      }
+
+      const matched = DATABASE.filter(item => 
+        item.keys.some(k => selectedWastes.has(k))
+      );
+
+      if (matched.length === 0) {
+        list.innerHTML = `
+          <div class="bg-white p-6 rounded-2xl text-center border border-[#D8D2C4] text-[#787268]">
+            ยังไม่พบแนวทางการแปรรูปตรงกับรายการนี้ กรุณาเลือกรายการอื่นเพิ่มเติม
           </div>
         `;
+      } else {
+        matched.forEach(item => {
+          const stepsHtml = item.steps.map((step, idx) => `
+            <li class="flex items-start space-x-2.5 text-sm sm:text-base text-[#383430]">
+              <span class="bg-[#264E36] text-white font-bold rounded-full w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-xs">${idx + 1}</span>
+              <span>${step}</span>
+            </li>
+          `).join('');
 
-        if (item.category === 'trending') trendingContainer.appendChild(card);
-        else if (item.category === 'biomaterial') bioContainer.appendChild(card);
-        else circularContainer.appendChild(card);
-      });
+          const card = document.createElement('div');
+          card.className = "bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-[#D8D2C4] space-y-4";
+          card.innerHTML = `
+            <div class="flex items-start justify-between">
+              <div class="flex items-center space-x-3">
+                <span class="text-4xl p-2.5 bg-[#FAF8F5] border border-[#E3DEC3] rounded-2xl">${item.icon}</span>
+                <div>
+                  <h3 class="font-extrabold text-base sm:text-lg text-[#1F1D1A]">${item.title}</h3>
+                  <span class="inline-block mt-1 text-xs bg-[#FAF4F0] text-[#9E472A] border border-[#9E472A]/30 font-bold px-2.5 py-0.5 rounded-full">${item.badge}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-[#FAF8F5] border border-[#E3DEC3] rounded-xl p-4 space-y-2 text-sm sm:text-base">
+              <p class="text-[#264E36]"><b>🔬 ข้อมูลวิชาการ/พารามิเตอร์จริง:</b> <span class="text-[#383430]">${item.param}</span></p>
+              <p class="text-[#9E472A]"><b>💰 ประโยชน์ที่แท้จริง:</b> <span class="text-[#383430]">${item.benefit}</span></p>
+            </div>
+
+            <div class="space-y-2 pt-1">
+              <p class="font-bold text-[#1F1D1A] text-sm sm:text-base">ขั้นตอนการแปรรูปอย่างง่าย:</p>
+              <ul class="space-y-2">${stepsHtml}</ul>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+      }
+
+      badge.innerText = `พบ ${matched.length} รายการ`;
+      section.classList.remove('hidden');
+      section.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function openDetail(id) {
-      const item = AGRI_CONTENT.find(x => x.id === id);
-      if (!item) return;
-
-      document.getElementById('mIcon').innerText = item.icon;
-      document.getElementById('mTag').innerText = item.tag;
-      document.getElementById('mTitle').innerText = item.title;
-      document.getElementById('mParam').innerText = item.param;
-      document.getElementById('mBenefit').innerText = item.benefit;
-
-      const stepsList = document.getElementById('mSteps');
-      stepsList.innerHTML = item.steps.map((step, idx) => `
-        <li class="flex items-start space-x-2">
-          <span class="bg-[#E05A5A]/30 text-[#FFA4A4] border border-[#E05A5A]/40 font-bold rounded-full w-4 h-4 flex items-center justify-center shrink-0 mt-0.5 text-[10px]">${idx + 1}</span>
-          <span>${step}</span>
-        </li>
-      `).join('');
-
-      document.getElementById('detailModal').classList.remove('hidden');
-    }
-
-    function filterWaste(wasteKey) {
-      document.querySelectorAll('.filter-pill').forEach(btn => {
-        btn.classList.remove('bg-[#E05A5A]', 'text-white');
-        btn.classList.add('bg-[#262626]', 'text-[#D1D1D1]');
-      });
-      event?.target?.classList.remove('bg-[#262626]', 'text-[#D1D1D1]');
-      event?.target?.classList.add('bg-[#E05A5A]', 'text-white');
-      renderCards(wasteKey);
-    }
-
-    // เริ่มต้นแสดงผล
-    renderCards('all');
-
-    // ลงทะเบียน Service Worker สำหรับการใช้งานออฟไลน์ในแปลงเกษตร
+    // ลงทะเบียน Service Worker ให้อ่านออฟไลน์ได้
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
     }
